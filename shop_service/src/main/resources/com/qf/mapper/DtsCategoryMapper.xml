@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.mapper.DtsCategoryMapper">
+          <select id="findCategorySellV0" resultType="CategorySellAmts">
+                    select dc.name,sum(dog.price * dog.number) as value from dts_category dc
+                              inner join dts_goods dg on dc.id = dg.category_id
+                              inner join dts_order_goods dog on dg.id = dog.goods_id
+                    group by dc.name
+          </select>
+</mapper>

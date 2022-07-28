@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+        <!-- 1.配置权限管理器 -->
+        <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+            <!-- 配置使用的自定义Realm -->
+            <property name="realm" ref="myUserRealm"/>
+            <!-- 会话管理 -->
+            <property name="sessionManager" ref="webSessionManager"/>
+        </bean>
+
+        <!-- 2. 配置自定义Realm -->
+        <bean id="myUserRealm" class="com.qf.shiro.AdminAuthorizingRealm"/>
+
+        <!-- 3. 自定义web会话管理器-->
+        <bean id="webSessionManager" class="com.qf.shiro.AdminWebSessionManager"/>
+
+        <!--处理shiro导致的跨域问题-->
+        <bean id="autchFilter" class="com.qf.config.AutchFilter"/>
+
+        <!-- 4. 配置shiro过滤器, 处理web.xml 拦截的请求 -->
+        <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+            <!-- 配置使用的权限管理器 -->
+            <property name="securityManager" ref="securityManager"/>
+            <!-- 配置登录地址 -->
+            <property name="loginUrl" value="/admin/auth/401"/>
+            <!-- 配置登录成功跳转的地址 -->
+            <property name="successUrl" value="/admin/auth/index"/>
+            <!-- 配置没有权限跳转的地址 -->
+            <property name="unauthorizedUrl" value="/admin/auth/403"/>
+<!--                  自定义过滤器 -->
+            <property name="filters">
+                <map>
+                    <entry key="authc" value-ref="autchFilter"/>
+                </map>
+            </property>
+
+            <!-- 配置过滤规则，从上到下的顺序匹配 -->
+            <property name="filterChainDefinitions">
+                <value>
+                    # 放行的地址
+                    /admin/auth/login = anon
+                    /admin/auth/captchaImage = anon
+                    /admin/auth/401 = anon
+                    /admin/auth/index = anon
+                    /admin/auth/403 = anon
+                    /admin/** = anon
+                    /swagger** = anon
+                    /admin/auth/logout = authc
+                    /admin/auth/info = authc
+                    /admin/dashboard/chart = authc
+                    /admin/role/options = authc
+                    # 其他请求必须登录后才能访问
+                    # /** = authc
+                </value>
+            </property>
+
+        </bean>
+
+</beans>        

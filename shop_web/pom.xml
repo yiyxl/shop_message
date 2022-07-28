@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+          <parent>
+                    <artifactId>shop_manage</artifactId>
+                    <groupId>com.qf</groupId>
+                    <version>1.0-SNAPSHOT</version>
+          </parent>
+          <modelVersion>4.0.0</modelVersion>
+
+          <artifactId>shop_web</artifactId>
+          <!--表示这个是war包工程-->
+          <packaging>war</packaging>
+
+          <properties>
+                    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+                    <maven.compiler.source>1.8</maven.compiler.source>
+                    <maven.compiler.target>1.8</maven.compiler.target>
+          </properties>
+
+          <dependencies>
+                    <!--依赖于service工程-->
+                    <dependency>
+                              <groupId>com.qf</groupId>
+                              <artifactId>shop_service</artifactId>
+                              <version>1.0-SNAPSHOT</version>
+                    </dependency>
+
+                    <!--文件上传-->
+                    <dependency>
+                              <groupId>commons-fileupload</groupId>
+                              <artifactId>commons-fileupload</artifactId>
+                    </dependency>
+                    <dependency>
+                              <groupId>commons-io</groupId>
+                              <artifactId>commons-io</artifactId>
+                    </dependency>
+
+                    <!--springmvc依赖-->
+                    <dependency>
+                              <groupId>org.springframework</groupId>
+                              <artifactId>spring-webmvc</artifactId>
+                    </dependency>
+
+                    <!--aop的第三方依赖-->
+                    <dependency>
+                              <groupId>org.aspectj</groupId>
+                              <artifactId>aspectjweaver</artifactId>
+                    </dependency>
+
+                    <dependency>
+                              <groupId>javax.servlet</groupId>
+                              <artifactId>javax.servlet-api</artifactId>
+                    </dependency>
+
+                    <!--shiro-->
+                    <dependency>
+                              <groupId>org.apache.shiro</groupId>
+                              <artifactId>shiro-all</artifactId>
+                              <type>pom</type>
+                    </dependency>
+
+                    <!--swagger2 依赖-->
+                    <dependency>
+                              <groupId>io.springfox</groupId>
+                              <artifactId>springfox-swagger-ui</artifactId>
+                    </dependency>
+
+                    <dependency>
+                              <groupId>io.springfox</groupId>
+                              <artifactId>springfox-swagger2</artifactId>
+                    </dependency>
+
+                    <dependency>
+                              <groupId>org.hibernate.validator</groupId>
+                              <artifactId>hibernate-validator</artifactId>
+                    </dependency>
+          </dependencies>
+</project>

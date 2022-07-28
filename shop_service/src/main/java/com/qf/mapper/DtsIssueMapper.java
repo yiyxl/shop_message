@@ -1,0 +1,16 @@
+package com.qf.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.qf.pojo.DtsIssue;
+
+/**
+ * <p>
+ * 常见问题表 Mapper 接口
+ * </p>
+ *
+ * @author zhaojian
+ * @since 2021-05-12
+ */
+public interface DtsIssueMapper extends BaseMapper<DtsIssue> {
+
+}

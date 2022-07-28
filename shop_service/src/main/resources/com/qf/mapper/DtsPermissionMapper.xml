@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.qf.mapper.DtsPermissionMapper">
+          <insert id="insertBatch">
+                            insert into dts_permission
+                            (role_id,permission,add_time,update_time,deleted)
+                            values
+                                <foreach collection="permissions" item="l" separator=",">
+                                          (#{roleId},#{l},NOW(),NOW(),0)
+                                </foreach>
+          </insert>
+
+</mapper>

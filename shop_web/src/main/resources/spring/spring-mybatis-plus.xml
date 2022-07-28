@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 读取properties文件 -->
+    <context:property-placeholder location="classpath:dbinfo.properties"/>
+
+    <!-- 配置数据源连接池 -->
+    <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driverClassName}"></property>
+        <property name="url" value="${jdbc.url}"></property>
+        <property name="username" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+        <!--sql监听-->
+        <property name="filters" value="stat"></property>
+    </bean>
+
+    <!-- 配置会话工厂 -->
+    <bean id="sqlSessionFactory" class="com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean">
+        <!-- 配置使用的数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 配置自定义类型转换处理器, java和数据库中的数据类型互相转换 -->
+        <property name="typeHandlersPackage" value="com.qf.handler"/>
+        <!-- 扫描mapper包 -->
+        <property name="mapperLocations" value="classpath:com/qf/mapper/*.xml"/>
+
+        <!--别名-->
+        <property name="typeAliasesPackage" value="com.qf.pojo,com.qf.vo"/>
+
+        <!-- 初始化设置 -->
+        <property name="configuration" ref="configuration"/>
+
+        <!-- 使用mybatis插件拦截器 -->
+        <property name="plugins">
+            <array>
+                <ref bean="mybatisPlusInterceptor"/>
+            </array>
+        </property>
+    </bean>
+
+    <!-- mybatisPlus初始化属性-->
+    <bean id="configuration" class="com.baomidou.mybatisplus.core.MybatisConfiguration">
+        <!-- 自动驼峰命名转换开启 -->
+        <property name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 配置日志 -->
+        <property name="logImpl" value="org.apache.ibatis.logging.stdout.StdOutImpl"/>
+    </bean>
+
+    <!-- 配置mybatis插件拦截器 -->
+    <bean id="mybatisPlusInterceptor" class="com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor">
+        <property name="interceptors">
+            <list>
+                <!-- 使用分页插件 -->
+                <ref bean="paginationInnerInterceptor"/>
+            </list>
+        </property>
+    </bean>
+
+    <!--分页插件-->
+    <bean id="paginationInnerInterceptor" class="com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor">
+        <!-- 对于单一数据库类型来说,都建议配置该值,避免每次分页都去抓取数据库类型 -->
+        <constructor-arg name="dbType" value="MYSQL"/>
+    </bean>
+
+    <!-- dao扫描mapper层 创建代理对象 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.qf.mapper"/>
+    </bean>
+
+
+</beans>        
